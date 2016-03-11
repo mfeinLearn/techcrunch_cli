@@ -1,14 +1,33 @@
 class TechcrunchCli::Story
+  # We never instantiate instances of Stories.
+  # Rather, we just call class methods on this all time.
+
+  # Class Instance Variable
   attr_accessor :title, :author, :summary, :href, :content
-  
+
+  def self.scrape_content(url)
+    @doc = Nokogiri::HTML(open(url))
+    content = @doc.search("div.article-entry").text.strip
+  end
+
+  def self.scrape_urls
+    @doc = Nokogiri::HTML(open('http://techcrunch.com/'))
+
+    hrefs = [] # always the same
+    @doc.search("ul#river1 h2.post-title a").each do |a|
+      hrefs << a.attr("href") # different
+    end
+    hrefs # always the same
+  end
+
   def self.scrape_titles
     @doc = Nokogiri::HTML(open('http://techcrunch.com/'))
 
-    titles = []
+    titles = [] # always the same
     @doc.search("ul#river1 h2.post-title").each do |h2|
-      titles << h2.text
+      titles << h2.text # different
     end
-    titles
+    titles # always the same
   end
 
   def self.scrape_authors
