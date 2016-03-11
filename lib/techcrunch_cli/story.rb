@@ -1,44 +1,20 @@
 class TechcrunchCli::Story
-  # We never instantiate instances of Stories.
-  # Rather, we just call class methods on this all time.
+  attr_accessor :title, :author, :summary, :url, :content
+  @@all = []
 
-  # Class Instance Variable
-  attr_accessor :title, :author, :summary, :href, :content
-
-  def self.scrape_content(url)
-    @doc = Nokogiri::HTML(open(url))
-    content = @doc.search("div.article-entry").text.strip
+  def self.all
+    @@all
   end
 
-  def self.scrape_urls
-    @doc = Nokogiri::HTML(open('http://techcrunch.com/'))
-
-    hrefs = [] # always the same
-    @doc.search("ul#river1 h2.post-title a").each do |a|
-      hrefs << a.attr("href") # different
-    end
-    hrefs # always the same
+  def content
+    @content ||= TechcrunchCli::Scraper.new(url).scrape_article
   end
 
-  def self.scrape_titles
-    @doc = Nokogiri::HTML(open('http://techcrunch.com/'))
-
-    titles = [] # always the same
-    @doc.search("ul#river1 h2.post-title").each do |h2|
-      titles << h2.text # different
-    end
-    titles # always the same
+  def open_in_browser
+    system("open '#{url}'")
   end
-
-  def self.scrape_authors
-    @doc = Nokogiri::HTML(open('http://techcrunch.com/'))
-    authors = @doc.search("ul#river1 div.byline").text.split("by")
-    authors
-  end
-
-  def self.scrape_summaries
-    @doc = Nokogiri::HTML(open('http://techcrunch.com/'))
-    summaries = @doc.search("ul#river1 p.excerpt").text
-    summaries.split("Read More")
+  
+  def save
+    @@all << self
   end
 end
