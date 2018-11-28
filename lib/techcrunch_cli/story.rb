@@ -59,3 +59,12 @@ end
 # @doc.search("a").text
 # - headline and discription
 # @doc.search("div").text
+# - times and names
+#  @doc.search("div.river-byline").text
+# - dates
+# @doc.search("div.river-byline time.river-byline__time").text
+
+
+# notes
+# You can see that information under "Latest" - beneath the title next to the author
+# We would just need to pull that out the same way we're pulling out the title and the author
