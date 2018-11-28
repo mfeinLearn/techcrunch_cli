@@ -1,5 +1,7 @@
+require 'nokogiri'
+require 'open-uri'
 require 'pry'
-class TechcrunchCli::Story
+class Story
   # We never instantiate instances of Stories.
   # Rather, we just call class methods on this all time.
 
@@ -8,13 +10,13 @@ class TechcrunchCli::Story
 
   def self.scrape_content(url)
     @doc = Nokogiri::HTML(open(url))
-    #binding.pry
+    # binding.pry
     content = @doc.search("div.article-entry").text.strip
   end
 
   def self.scrape_urls
     @doc = Nokogiri::HTML(open('https://techcrunch.com/'))
-
+    # binding.pry
     hrefs = [] # always the same
     @doc.search("ul#river1 h2.post-title a").each do |a|
       hrefs << a.attr("href") # different
@@ -35,6 +37,7 @@ class TechcrunchCli::Story
 
   def self.scrape_authors
     @doc = Nokogiri::HTML(open('https://techcrunch.com/'))
+    binding.pry
     authors = @doc.search("ul#river1 div.byline").text.split("by")
     authors
   end
@@ -44,5 +47,15 @@ class TechcrunchCli::Story
     summaries = @doc.search("ul#river1 p.excerpt").text
     summaries.split("Read More")
   end
+  # self.scrape_content('https://techcrunch.com/')
+  # self.scrape_urls
+  self.scrape_authors
 end
-TechcrunchCli::Story.scrape_content('https://techcrunch.com/')
+#It's really helpful to have access to pry for nokogiri!
+# I also recommend taking a close look at the html of the site you're scraping in the developer console
+
+# notes
+# - all text (titles and authors)
+# @doc.search("a").text
+#
+# 
