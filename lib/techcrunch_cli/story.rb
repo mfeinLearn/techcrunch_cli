@@ -57,5 +57,5 @@ end
 # notes
 # - all text (titles and authors)
 # @doc.search("a").text
-#
-# 
+# - headline and discription
+# @doc.search("div").text
