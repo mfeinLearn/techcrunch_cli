@@ -40,7 +40,7 @@ require 'pry'
     @doc = Nokogiri::HTML(open('https://techcrunch.com/'))
     #binding.pry
     # authors = @doc.search("span.river-byline__authors a").text.split("by")
-    authors = @doc.search("span.river-byline__authors a").first.text.strip.split("by")
+    authors = @doc.search("span.river-byline__authors a").last.text.strip.split("by")
     authors
   end
 
